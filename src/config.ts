@@ -67,7 +67,7 @@ const config = {
     [opBNB.id]: "0xfF12a4Dc0248d913844EDC3aE97E06838F76E321",
     [linea.id]: "0xeEA16fcFb1FAe5269d070F337073aa28f7442ED4",
     [optimism.id]: "0xeEA16fcFb1FAe5269d070F337073aa28f7442ED4",
-    [avalanche.id]: "0xfF12a4Dc0248d913844EDC3aE97E06838F76E321",
+    [avalanche.id]: "0x81F317ceF82b25437e4502d22c6F6Ac492e29505",
     [zora.id]: "0xfF12a4Dc0248d913844EDC3aE97E06838F76E321",
   } as Record<number, `0x${string}`>,
 
