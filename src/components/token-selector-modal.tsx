@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Token } from "../types/Token";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
@@ -7,6 +7,8 @@ import useTokens from "@/hooks/useTokens";
 import { isAddress } from "viem";
 import TokenAvatar from "./token-avatar";
 import { useDebounce } from "react-use";
+// import useTokenStore from "@/store/token-store";
+import { useNetwork } from "wagmi";
 
 type Props = {
   open: boolean;
@@ -14,22 +16,103 @@ type Props = {
   selectedToken: (token: Token) => void;
 };
 
+const chainIdToName: { [key: number]: string } = {
+  1: 'ethereum',
+  56: 'bnb not work',
+  137: 'polygon not work',
+  59144: 'linea',
+  8453: 'base',
+  42161: 'arbitrum not work',
+  10: 'optimism not work',
+  43114: 'avalanche',
+}
+
 const TokenSelectorModal = ({ open, setOpen, selectedToken }: Props) => {
   const { tokens, findToken } = useTokens();
   const [searchQuery, setSearchQuery] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [allTokens, setAllTokens] = useState<Token[]>([]);
+  // const [chunkSize] = useState(10); // Number of tokens to load per batch
+  // const [currentIndex, setCurrentIndex] = useState(0); // Track how many tokens are displayed
+  const modalRef = useRef<HTMLDivElement | null>(null); // Ref for the modal
+  const { chain } = useNetwork();
+
+
+  const fetchAllTokens = async () => {
+    try {
+      setLoading(true);
+      if (!chain) {
+        throw new Error("Chain is not defined or invalid");
+      }
+
+      const response = await fetch(
+        `https://tokens.coingecko.com/${chainIdToName[chain.id]}/all.json`,
+        { cache: "force-cache" }
+      ).then((res) => res.json());
+
+      const tokensLocal = response.tokens.map((token: Token) => ({
+        chainId: token.chainId,
+        symbol: token.symbol,
+        name: token.name,
+        address: token.address,
+        logoURI: token.logoURI,
+        decimals: token.decimals,
+      }));
+
+      setAllTokens([...tokens, ...tokensLocal]);
+      // useTokenStore.setState({
+      //   tokens: [...useTokenStore.getState().tokens, ...tokensLocal.slice(0, chunkSize)],
+      // });
+      // setCurrentIndex(chunkSize);
+    } catch (error) {
+      setAllTokens(tokens);
+      console.error("Error fetching tokens:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // const handleScroll = () => {
+  //   if (!modalRef.current) return;
+
+  //   const { scrollTop, scrollHeight, clientHeight } = modalRef.current;
+
+  //   if (scrollTop + clientHeight >= scrollHeight - 200 && currentIndex < allTokens.length) {
+  //     const nextIndex = Math.min(currentIndex + chunkSize, allTokens.length);
+  //     useTokenStore.setState({
+  //       tokens: [...useTokenStore.getState().tokens, ...allTokens.slice(currentIndex, nextIndex)],
+  //     });
+  //     setCurrentIndex(nextIndex);
+  //   }
+  // };
+
+  useEffect(() => {
+    fetchAllTokens();
+  }, [chain]);
+
+  // useEffect(() => {
+  //   const modalElement = modalRef.current;
+  //   if (modalElement) {
+  //     modalElement.addEventListener("scroll", handleScroll);
+  //   }
+  //   return () => {
+  //     if (modalElement) {
+  //       modalElement.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, [handleScroll, currentIndex, allTokens]);
 
   const filteredTokens = useMemo(
     () =>
-      tokens.filter(
+      allTokens.filter(
         (token) =>
           token.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
           token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           token.address?.toLowerCase() === searchQuery.toLowerCase() ||
           !searchQuery
       ),
-    [tokens, searchQuery]
+    [allTokens, searchQuery]
   );
 
   useDebounce(
@@ -66,7 +149,7 @@ const TokenSelectorModal = ({ open, setOpen, selectedToken }: Props) => {
           />
         </div>
         <hr />
-        <div className="max-h-[60vh] overflow-y-auto">
+        <div ref={modalRef} className="max-h-[60vh] overflow-y-auto">
           {loading ? (
             <div className="flex items-center justify-center h-16">
               <Loader2Icon className="animate-spin" size={28} />

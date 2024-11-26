@@ -1,14 +1,17 @@
 import { useMemo } from "react";
-import useCurrentChain from "./useCurrentChain";
+// import useCurrentChain from "./useCurrentChain";
 import useTokenStore from "@/store/token-store";
 import { Token } from "@/types/Token";
 import { isAddress } from "viem";
 import useWeb3Clients from "./useWeb3Clients";
-import { erc20ABI } from "wagmi";
+import { erc20ABI, useNetwork } from "wagmi";
 import useUserStore from "@/store/user-store";
 
 const useTokens = () => {
-  const chain = useCurrentChain();
+  const { chain } = useNetwork();
+  if (!chain) {
+    throw new Error("Chain is not defined or invalid");
+  }
   const { publicClient } = useWeb3Clients();
   const userTokens = useUserStore((state) => state.tokens[chain.id] || {});
   const listedTokens = useTokenStore((state) =>
@@ -88,28 +91,28 @@ const useTokens = () => {
     return newToken;
   };
 
-  const fetchTokens = async () => {
-    const response = await fetch("https://tokens.coingecko.com/base/all.json", {
-      cache: "force-cache",
-    }).then((res) => res.json());
-    const tokens = response.tokens.map((token: Token) => ({
-      chainId: token.chainId,
-      symbol: token.symbol,
-      name: token.name,
-      address: token.address,
-      logoURI: token.logoURI,
-      decimals: token.decimals,
-    }));
+  // const fetchTokens = async () => {
+  //   const response = await fetch("https://tokens.coingecko.com/base/all.json", {
+  //     cache: "force-cache",
+  //   }).then((res) => res.json());
+  //   const tokens = response.tokens.map((token: Token) => ({
+  //     chainId: token.chainId,
+  //     symbol: token.symbol,
+  //     name: token.name,
+  //     address: token.address,
+  //     logoURI: token.logoURI,
+  //     decimals: token.decimals,
+  //   }));
 
-    useTokenStore.setState({
-      tokens: [...useTokenStore.getState().tokens, ...tokens],
-    });
-  };
+  //   useTokenStore.setState({
+  //     tokens: [...useTokenStore.getState().tokens, ...tokens],
+  //   });
+  // };
 
   return {
     tokens,
     pairTokens,
-    fetchTokens,
+    // fetchTokens,
     findToken,
   };
 };
