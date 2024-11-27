@@ -1,18 +1,14 @@
 import { useMemo } from "react";
-// import useCurrentChain from "./useCurrentChain";
+import useCurrentChain from "./useCurrentChain";
 import useTokenStore from "@/store/token-store";
 import { Token } from "@/types/Token";
 import { isAddress } from "viem";
 import useWeb3Clients from "./useWeb3Clients";
-import { erc20ABI, useNetwork } from "wagmi";
+import { erc20ABI } from "wagmi";
 import useUserStore from "@/store/user-store";
-import config from "../config";
 
 const useTokens = () => {
-  let { chain } = useNetwork();
-  if (!chain) {
-    chain = config.chains[0]
-  }
+  const chain = useCurrentChain();
   const { publicClient } = useWeb3Clients();
   const userTokens = useUserStore((state) => state.tokens[chain.id] || {});
   const listedTokens = useTokenStore((state) =>

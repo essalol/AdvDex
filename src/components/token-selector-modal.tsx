@@ -8,8 +8,7 @@ import { isAddress } from "viem";
 import TokenAvatar from "./token-avatar";
 import { useDebounce } from "react-use";
 // import useTokenStore from "@/store/token-store";
-import { useNetwork } from "wagmi";
-import config from "../config"
+import useCurrentChain from "@/hooks/useCurrentChain";
 
 type Props = {
   open: boolean;
@@ -37,15 +36,12 @@ const TokenSelectorModal = ({ open, setOpen, selectedToken }: Props) => {
   // const [chunkSize] = useState(10); // Number of tokens to load per batch
   // const [currentIndex, setCurrentIndex] = useState(0); // Track how many tokens are displayed
   const modalRef = useRef<HTMLDivElement | null>(null); // Ref for the modal
-  let { chain } = useNetwork();
+  const chain = useCurrentChain();
 
 
   const fetchAllTokens = async () => {
     try {
       setLoading(true);
-      if (!chain) {
-        chain = config.chains[0]
-      }
 
       const response = await fetch(
         `https://tokens.coingecko.com/${chainIdToName[chain.id]}/all.json`,
