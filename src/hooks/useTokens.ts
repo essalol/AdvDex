@@ -6,11 +6,12 @@ import { isAddress } from "viem";
 import useWeb3Clients from "./useWeb3Clients";
 import { erc20ABI, useNetwork } from "wagmi";
 import useUserStore from "@/store/user-store";
+import config from "../config";
 
 const useTokens = () => {
-  const { chain } = useNetwork();
+  let { chain } = useNetwork();
   if (!chain) {
-    throw new Error("Chain is not defined or invalid");
+    chain = config.chains[0]
   }
   const { publicClient } = useWeb3Clients();
   const userTokens = useUserStore((state) => state.tokens[chain.id] || {});

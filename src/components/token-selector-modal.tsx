@@ -9,6 +9,7 @@ import TokenAvatar from "./token-avatar";
 import { useDebounce } from "react-use";
 // import useTokenStore from "@/store/token-store";
 import { useNetwork } from "wagmi";
+import config from "../config"
 
 type Props = {
   open: boolean;
@@ -36,14 +37,14 @@ const TokenSelectorModal = ({ open, setOpen, selectedToken }: Props) => {
   // const [chunkSize] = useState(10); // Number of tokens to load per batch
   // const [currentIndex, setCurrentIndex] = useState(0); // Track how many tokens are displayed
   const modalRef = useRef<HTMLDivElement | null>(null); // Ref for the modal
-  const { chain } = useNetwork();
+  let { chain } = useNetwork();
 
 
   const fetchAllTokens = async () => {
     try {
       setLoading(true);
       if (!chain) {
-        throw new Error("Chain is not defined or invalid");
+        chain = config.chains[0]
       }
 
       const response = await fetch(
