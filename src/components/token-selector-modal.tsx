@@ -18,12 +18,12 @@ type Props = {
 
 const chainIdToName: { [key: number]: string } = {
   1: 'ethereum',
-  56: 'bnb not work',
-  137: 'polygon not work',
+  56: 'binance-smart-chain',
+  137: 'polygon-pos',
   59144: 'linea',
   8453: 'base',
-  42161: 'arbitrum not work',
-  10: 'optimism not work',
+  42161: 'arbitrum-one',
+  10: 'optimistic-ethereum',
   43114: 'avalanche',
 }
 
