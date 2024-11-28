@@ -109,13 +109,13 @@ export default function SwapForm() {
           <p className="text-[rgb(232,249,255)] mb-4">You're selling</p>
           <div className="flex">
             <div className="flex flex-col items-start justify-center gap-4">
-            <TokenSelector
-              showMetaMaskImport
-              tokenSelected={token0}
-              selectedToken={(token) => {
-                if (token1?.address === token.address) setToken1(token0);
-                setToken0(token);
-              }}
+              <TokenSelector
+                showMetaMaskImport
+                tokenSelected={token0}
+                selectedToken={(token) => {
+                  if (token1?.address === token.address) setToken1(token0);
+                  setToken0(token);
+                }}
               />
               {token0 && (
                 <span className="flex items-center gap-1 text-sm">
@@ -137,8 +137,7 @@ export default function SwapForm() {
               onChange={(e) => setAmount0(e.currentTarget.value)}
               readOnly={!isConnected || !token0}
               className=
-                "text-destructive !ring-destructive text-white bg-transparent border-none text-right text-lg"
-            
+              "text-destructive !ring-destructive text-white bg-transparent border-none text-right text-lg"
             />
           </div>
           <div className="flex justify-end gap-1">
@@ -198,7 +197,7 @@ export default function SwapForm() {
             <Input value={amount1} readOnly={true} placeholder="0.0" className="text-white bg-transparent border-none text-right text-lg" />
           </div>
         </div>
-        <div className="flex items-center justify-between gap-4 font-medium">
+        <div className="flex items-center justify-between gap-4 font-medium text-sm">
           <SettingModal
             trigger={
               <button className="flex items-center gap-2 text-[#c7f284]">
@@ -206,12 +205,26 @@ export default function SwapForm() {
               </button>
             }
           />
-
           <span className="text-[#c7f284]">{slippageTolerance}%</span>
         </div>
         <Button className="h-12 py-8 bg-[#2d3d3d] hover:bg-[#2d3d3d] hover:border hover:border-[#c7f284] text-[#c7f284] text-lg rounded-xl" disabled={disableButton} onClick={submit}>
           {buttonTitle}
         </Button>
+        <div className="grid">
+          <div className="flex items-center justify-between gap-4 text-sm">
+            Minimum received
+            <span>{amount1 ? (parseFloat(amount1) * (1 - slippageTolerance / 100)).toFixed(2) : 0} {token1?.name}</span>
+          </div>
+          <div className="flex items-center justify-between gap-4 text-sm">
+            Trading Fee
+            <span>0.2%</span>
+          </div>
+          <div className="flex items-center justify-between gap-4 text-sm">
+            Route
+            <span>{token0?.name} &gt; {token1?.name}</span>
+          </div>
+        </div>
+
       </CardContent>
 
       <TransactionModal
