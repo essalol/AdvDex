@@ -9,7 +9,7 @@ import useCurrentChain from "@/hooks/useCurrentChain";
 import { useTranslation } from "react-i18next";
 
 const links = [
-  { label: "home", to: "/" },
+  { label: "swap", to: "/" },
   { label: "liquidity", to: "/pools" },
   { label: "analytics", to: "/analytics" },
 ];
@@ -27,13 +27,13 @@ export default function Navbar() {
   }, [pathname]);
 
   return (
-    <div className="flex justify-between items-center h-16 text-[rgb(117,121,133)] backdrop-blur-lg text-card-foreground">
+    <div style={{color: 'rgb(117,121,133)'}} className="flex justify-between items-center h-16 backdrop-blur-lg text-card-foreground">
       <div className="container flex flex-wrap items-center justify-between h-full gap-6">
         <Link to="/" className="flex items-center ">
-         
-          <h2 className="hidden font-bold text-center text-white lg:inline-block lg:text-2xl">
+          <img src='/cryptoswap.png'  className="inline-block w-auto h-10"></img>
+          {/* <h2 className="hidden font-bold text-center text-white lg:inline-block lg:text-2xl">
             *
-          </h2>
+          </h2> */}
         </Link>
         <Button
           className="ml-auto lg:hidden"
@@ -59,7 +59,7 @@ export default function Navbar() {
                   "font-medium transition-colors px-4 py-2 h-full flex items-center justify-center gap-4",
                   "hover:text-[#c7f284]",
                   pathname === to &&
-                    "text-[#ffffff]"
+                  "text-[#ffffff]"
                 )}
               >
                 {/* <div className="flex h-10 w-10 items-center justify-center gap-2.5 rounded-lg bg-cyan-50 bg-opacity-5">
@@ -103,12 +103,13 @@ export default function Navbar() {
               variant={"outline"}
               className="py-5 border-input"
             >
-              {/* <img
-                src="/108554348.png"
+              <img
+                src="/cryptoswap.png"
                 alt="logo"
                 className="inline-block w-auto h-6"
-              />{" "}
-              &nbsp; */}
+              />
+              &nbsp;
+              &nbsp;
               {chain.name}
             </Button>
 
