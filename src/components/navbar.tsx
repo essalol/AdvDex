@@ -45,7 +45,7 @@ export default function Navbar() {
         </Button>
         <div
           className={cn("items-center flex-1 max-lg:gap-6 gap-12 flex h-full", {
-            "max-lg:flex-col max-lg:min-w-full bg-[#131c25] w-full h-42 absolute p-4 top-16 left-0":
+            "max-lg:flex-col max-lg:min-w-full bg-[#14151a] w-full h-42 absolute p-4 top-16 left-0":
               openMenu,
             "max-lg:hidden": !openMenu,
           })}
