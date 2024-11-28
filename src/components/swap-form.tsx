@@ -105,7 +105,7 @@ export default function SwapForm() {
   return (
     <Card>
       <CardContent className="grid gap-5">
-        <div className="space-y-2 bg-[#131c25] p-4 rounded-xl">
+        <div className="space-y-2 bg-[#2a2c3480] p-4 rounded-xl">
           <p className="text-[rgb(232,249,255)] mb-4">You're selling</p>
           <div className="flex">
             <div className="flex flex-col items-start justify-center gap-4">
@@ -143,7 +143,7 @@ export default function SwapForm() {
           <div className="flex justify-end gap-1">
             <Button
               size={"sm"}
-              className="bg-[#1b2937] hover:bg-[#1b2937] hover:border hover:text-[#c7f284] hover:border-[#c7f284]"
+              className="bg-[#14151a] hover:bg-[#1b2937] hover:border hover:text-[#c7f284] hover:border-[#c7f284]"
               onClick={() =>
                 setAmount0(
                   (Number(balance0.data?.formatted || 0) * 0.5).toString()
@@ -154,7 +154,7 @@ export default function SwapForm() {
             </Button>
             <Button
               size={"sm"}
-              className="bg-[#1b2937] hover:bg-[#1b2937] hover:border hover:text-[#c7f284] hover:border-[#c7f284]"
+              className="bg-[#14151a] hover:bg-[#1b2937] hover:border hover:text-[#c7f284] hover:border-[#c7f284]"
               onClick={() => setAmount0(balance0.data?.formatted || "")}
             >
               MAX
@@ -163,7 +163,7 @@ export default function SwapForm() {
         </div>
         <div className="flex justify-center">
           <Button
-            className="border text-primary bg-[rgb(28,41,54)] hover:bg-[rgb(28,41,54)] border-input rounded-full text-white/25 hover:text-[#c7f284] hover:border-[#c7f284] border-[#131c25] border-2 p-0"
+            className="border text-primary bg-[#2a2c3480] hover:bg-[rgb(28,41,54)] border-input rounded-full text-white/25 hover:text-[#c7f284] hover:border-[#c7f284] border-[#131c25] border-2 p-0"
             variant={"ghost"}
             size={"icon"}
             onClick={() => invertTokens()}
@@ -171,7 +171,7 @@ export default function SwapForm() {
             <ArrowDownUpIcon size={16} />
           </Button>
         </div>
-        <div className="space-y-2 bg-[#131c25] p-4 rounded-xl">
+        <div className="space-y-2 bg-[#2a2c3480] p-4 rounded-xl">
           <p className="text-[rgb(232,249,255)] mb-4">You're buying</p>
           <div className="flex">
             <div className="flex flex-col items-start justify-center gap-4">

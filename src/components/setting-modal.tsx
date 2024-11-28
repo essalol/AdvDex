@@ -31,7 +31,7 @@ export function SettingModal({ trigger }: Props) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-[#1c2a37] text-white border-none">
+      <DialogContent className="sm:max-w-[425px] bg-[#18191a] text-white border-none">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>

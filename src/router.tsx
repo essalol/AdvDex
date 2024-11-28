@@ -7,6 +7,7 @@ import FindPool from "./pages/Find";
 import AddLiquidty from "./pages/AddLiquidity";
 import RemoveLiquidty from "./pages/RemoveLiquidity";
 import NotFound from "./pages/NotFound";
+import Analytics from "./pages/Analytics";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "analytics",
+        element: <Analytics />,
       },
       {
         path: "pools",

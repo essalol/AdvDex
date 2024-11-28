@@ -126,7 +126,7 @@ const TokenSelectorModal = ({ open, setOpen, selectedToken }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="p-0 pb-6 sm:max-w-lg bg-[#304256] text-white border-none">
+      <DialogContent className="p-0 pb-6 sm:max-w-lg bg-[#18191a] text-white border-none">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle className="text-lg font-medium">
             Select token
@@ -135,7 +135,7 @@ const TokenSelectorModal = ({ open, setOpen, selectedToken }: Props) => {
         <div className="relative mx-6">
           <Input
             type="text"
-            className="w-full pl-12 text-black bg-[#202f42]"
+            className="w-full pl-12 text-white bg-[#131313]"
             placeholder="Search name or paste address"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
