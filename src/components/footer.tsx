@@ -12,7 +12,7 @@ const Footer = () => (
         <p className="text-[#757985] flex lg:justify-start lg:ml-20 justify-center">© 2024 CryptoSwap. All rights reserved.</p>
         </div>
 
-        <div className="lg:ml-56">
+        <div className="lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
         <ul className="inline-block">
             <li style={{ display: 'inline', marginRight: '15px' }}>
                 <Link to="/about" className="hover:text-[#c7f284]" >About Us</Link>

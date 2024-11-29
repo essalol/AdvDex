@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import Analytics from "./pages/Analytics";
 import Swap from "./pages/Swap";
 import About from "./pages/About";
+import ReportPage from "./pages/ReportPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "about",
         element: <About />,
+      },
+      {
+        path: "report",
+        element: <ReportPage />
       },
       {
         path: "swap",
