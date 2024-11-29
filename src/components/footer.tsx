@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 
 const Footer = () => (
     <footer className="bg-[#2a2c3480] text-white text-center space-y-2" style={{ padding: '20px' }}>
-        <div className="flex justify-start items-center ml-20">
+        <div className="flex lg:justify-start items-center lg:ml-20 justify-center">
             <img src='/cryptoswap.png' className="inline-block w-auto h-10"></img>
-            <h2 className="hidden text-center lg:inline-block lg:text-2xl">
+            <h2 className="text-center text-2xl">
                 &nbsp;CryptoSwap
             </h2>
         </div>
-        <p className="text-[#757985] flex justify-start ml-20">© 2024 CryptoSwap. All rights reserved.</p>
+        <p className="text-[#757985] flex lg:justify-start lg:ml-20 justify-center">© 2024 CryptoSwap. All rights reserved.</p>
 
         <ul className="inline-block">
             <li style={{ display: 'inline', marginRight: '15px' }}>

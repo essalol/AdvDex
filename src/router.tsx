@@ -8,6 +8,7 @@ import AddLiquidty from "./pages/AddLiquidity";
 import RemoveLiquidty from "./pages/RemoveLiquidity";
 import NotFound from "./pages/NotFound";
 import Analytics from "./pages/Analytics";
+import Swap from "./pages/Swap";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "swap",
+        element: <Swap />,
       },
       {
         path: "analytics",

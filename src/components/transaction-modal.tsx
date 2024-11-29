@@ -17,7 +17,7 @@ const TransactionModal = ({ open, setOpen, txHash, content }: Props) => {
 
   return (
     <Dialog open={open}>
-      <DialogContent hideCloseButton className="sm:max-w-[425px]">
+      <DialogContent hideCloseButton className="sm:max-w-[425px] bg-[#18191a]">
         {loading ? (
           <>
             <div className="my-12 text-center">

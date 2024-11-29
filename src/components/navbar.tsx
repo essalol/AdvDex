@@ -9,7 +9,7 @@ import useCurrentChain from "@/hooks/useCurrentChain";
 import { useTranslation } from "react-i18next";
 
 const links = [
-  { label: "swap", to: "/" },
+  { label: "swap", to: "/swap" },
   { label: "liquidity", to: "/pools" },
   { label: "analytics", to: "/analytics" },
 ];
