@@ -97,6 +97,10 @@ export default function Pools() {
     loadMyPools();
   }, [address, chain]);
 
+  useEffect(() => {
+    document.title = "Liquidity | CryptoSwap";
+  }, []);
+
   return (
     <div className="container py-12">
       <Card className="w-full max-w-3xl mx-auto">
