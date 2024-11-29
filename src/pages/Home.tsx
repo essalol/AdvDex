@@ -53,7 +53,7 @@ export default function Home() {
         </div>
         <SwapForm />
       </div>
-      <div className="absolute py-2 w-full bottom-44 flex items-center">
+      <div className="absolute py-2 w-full bottom-40 lg:bottom-28 flex items-center">
         <Marquee>
           {tokenList.map((token, index) => (
             <button
