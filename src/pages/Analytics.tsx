@@ -19,7 +19,7 @@ const Analytics = () => {
   return (
     <div className="container py-12">
       <div className="flex justify-center items-center">
-        <div>
+        <div className="w-full lg:w-1/2">
           <GraphComponent labels={labels} data={data} height={400} width={600} />
         </div>
       </div>
