@@ -49,6 +49,7 @@
     "tailwindcss-animate": "^1.0.7",
     "viem": "^1.19.9",
     "wagmi": "^1.4.7",
+    "web3": "^4.15.0",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

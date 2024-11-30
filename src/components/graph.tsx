@@ -10,7 +10,7 @@ const GraphComponent = ({ data, labels, height, width }: { data: number[], label
         labels: labels, // x-axis labels
         datasets: [
             {
-                label: "Total Value Locked",
+                label: "Transaction Volume",
                 data: data, // y-axis data points
                 borderColor: "rgba(57, 255, 20, 1)", // Line color
                 backgroundColor: "rgba(57, 255, 20, 0.2)", // Fill color
@@ -56,7 +56,7 @@ const GraphComponent = ({ data, labels, height, width }: { data: number[], label
                 },
                 title: {
                     display: true,
-                    text: "Value (USD)",
+                    text: "Volume",
                     font: {
                         size: 12,
                     },
