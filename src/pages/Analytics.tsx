@@ -16,7 +16,8 @@ interface GroupedTransactions {
 }
 
 const Analytics = () => {
-  const [txs, setTxs] = useState<GroupedTransactions>({});
+  const [loading, setLoading] = useState(true);
+  // const [txs, setTxs] = useState<GroupedTransactions>({});
   const [labels, setLabels] = useState<string[]>([]);
   const [data, setData] = useState<number[]>([]);
   const networkUrls: { [key: string]: string } = {
@@ -32,7 +33,7 @@ const Analytics = () => {
 
   const mergeObjects = (obj1: GroupedTransactions, obj2: GroupedTransactions) => {
     const result = { ...obj1 }; // Start with the first object
-    
+
     for (let key in obj2) {
       if (result[key]) {
         result[key] = result[key].concat(obj2[key]);
@@ -40,7 +41,7 @@ const Analytics = () => {
         result[key] = obj2[key];
       }
     }
-  
+
     return result;
   };
 
@@ -132,22 +133,26 @@ const Analytics = () => {
       const lineaInfo = await fetchTransactions(networkUrls['linea'], "0xeEA16fcFb1FAe5269d070F337073aa28f7442ED4");
 
       const allInfo = mergeObjects(mergeObjects(mergeObjects(mergeObjects(mergeObjects(mergeObjects(mergeObjects(ethInfo, arbInfo), optInfo), bnbInfo), avaInfo), baseInfo), polInfo), lineaInfo);
-      setTxs(allInfo);
+      // setTxs(allInfo);
       const labels = Object.keys(allInfo);
       setLabels(labels);
       const values = Object.values(allInfo);
       const dataValues = values.map(arr => arr.length);
       setData(dataValues);
+      setLoading(false);
     })();
   }, []);
 
   return (
     <div className="container py-12">
-      <div className="flex justify-center items-center">
-        <div className="w-full lg:w-1/2">
-          <GraphComponent labels={labels} data={data} height={400} width={600} />
+      {!loading ?
+        <div className="flex justify-center items-center">
+          <div className="w-full lg:w-1/2">
+            <GraphComponent labels={labels} data={data} height={400} width={600} />
+          </div>
         </div>
-      </div>
+        : <div className="flex justify-center items-center text-2xl font-medium">Loading...</div>
+      }
     </div>
   )
 }
