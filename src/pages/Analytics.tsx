@@ -4,11 +4,22 @@ import LoadingBlock from "@/components/loading-block";
 
 interface Transfer {
   hash: string;
-  blockTimestamp?: string; // Made optional in case it's missing
+  blockNum: string,
   from: string;
   to: string;
   value: string;
   category: string;
+  erc721TokenId: string,
+  tokenId: string,
+  asset: string,
+  rawContract: {
+    value: string,
+    address: string,
+    decimal: string
+  },
+  metadata: {
+    blockTimestamp: string
+  }
   [key: string]: any; // For additional properties
 }
 
@@ -60,10 +71,12 @@ const Analytics = () => {
         method: "alchemy_getAssetTransfers",
         params: [
           {
+            withMetadata: true,
+            // excludeZeroValue: false,
             fromBlock: "0x0",
             toBlock: "latest",
             toAddress: contractAddress,
-            category: ["external", "erc20", "erc721"],
+            category: ["external", "erc20"],
           },
         ],
       };
@@ -83,34 +96,11 @@ const Analytics = () => {
 
         const transactions: Transfer[] = data.result.transfers;
 
-        for (const tx of transactions) {
-          if (tx.blockNum) {
-            const blockNumber = parseInt(tx.blockNum, 16); // Convert hex to decimal
-            const blockResponse = await fetch(url, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                jsonrpc: "2.0",
-                id: 1,
-                method: "eth_getBlockByNumber",
-                params: [`0x${blockNumber.toString(16)}`, false], // Block number in hex
-              }),
-            });
-
-            const blockData = await blockResponse.json();
-            if (blockData.result && blockData.result.timestamp) {
-              tx.blockTimestamp = new Date(
-                parseInt(blockData.result.timestamp, 16) * 1000
-              ).toISOString(); // Convert timestamp to ISO string
-            }
-          }
-        }
-
         // Group transactions by date
         const groupedByDate = transactions.reduce((acc: GroupedTransactions, tx: Transfer) => {
-          if (!tx.blockTimestamp) return acc;
+          if (!tx.metadata.blockTimestamp) return acc;
 
-          const date = tx.blockTimestamp.split("T")[0]; // Extract date (YYYY-MM-DD)
+          const date = tx.metadata.blockTimestamp.split("T")[0]; // Extract date (YYYY-MM-DD)
           if (!acc[date]) acc[date] = [];
           acc[date].push(tx);
           return acc;
@@ -170,18 +160,17 @@ const Analytics = () => {
 
                   <div className="border border-gray-300">
                     <div>
-                      <div className="text-[#c7f284] grid grid-cols-3 text-center font-bold border-b border-gray-300 py-2">
-                        <div>From</div>
-                        <div>To</div>
-                        <div>Value</div>
+                      <div className="text-[#c7f284] grid grid-cols-2 text-center font-bold border-b border-gray-300 py-2">
+                        <div>Address</div>
+                        <div>Asset</div>
                       </div>
                     </div>
                     <div>
                       {txs[labels.length - 1 - i].map((eachtx, index) => (
-                        <div key={index} className="grid grid-cols-3 text-center border-b border-gray-300">
+                        <div key={index} className="grid grid-cols-2 text-center border-b border-gray-300">
                           <div className="truncate max-w-full p-2 border-r">{eachtx.from}</div>
-                          <div className="truncate max-w-full p-2 border-r">{eachtx.to}</div>
-                          <div className="truncate max-w-full p-2">{eachtx.value}</div>
+                          {/* <div className="truncate max-w-full p-2 border-r">{eachtx.tokenId}</div> */}
+                          <div className="truncate max-w-full p-2">{eachtx.value}&nbsp;{eachtx.asset}</div>
                         </div>
                       ))}
                     </div>
