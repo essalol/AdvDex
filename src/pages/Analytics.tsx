@@ -168,9 +168,9 @@ const Analytics = () => {
                     <div>
                       {txs[labels.length - 1 - i].map((eachtx, index) => (
                         <div key={index} className="grid grid-cols-2 text-center border-b border-gray-300">
-                          <div className="truncate max-w-full p-2 border-r">{eachtx.from}</div>
+                          <div className="overflow-x-auto whitespace-nowrap p-2 border-r">{eachtx.from}</div>
                           {/* <div className="truncate max-w-full p-2 border-r">{eachtx.tokenId}</div> */}
-                          <div className="truncate max-w-full p-2">{eachtx.value}&nbsp;{eachtx.asset}</div>
+                          <div className="overflow-x-auto whitespace-nowrap p-2">{eachtx.value}&nbsp;{eachtx.asset}</div>
                         </div>
                       ))}
                     </div>
