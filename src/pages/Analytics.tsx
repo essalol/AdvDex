@@ -177,10 +177,10 @@ const Analytics = () => {
                     </div>
                     <div>
                       {txs[labels.length - 1 - i].map((eachtx, index) => (
-                        <div key={index} className="grid grid-cols-3 text-center border-b border-gray-300 py-2">
-                          <div>{eachtx.from}</div>
-                          <div>{eachtx.to}</div>
-                          <div>{eachtx.value}</div>
+                        <div key={index} className="grid grid-cols-3 text-center border-b border-gray-300">
+                          <div className="truncate max-w-full p-2 border-r">{eachtx.from}</div>
+                          <div className="truncate max-w-full p-2 border-r">{eachtx.to}</div>
+                          <div className="truncate max-w-full p-2">{eachtx.value}</div>
                         </div>
                       ))}
                     </div>
