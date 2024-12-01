@@ -17,7 +17,7 @@ interface GroupedTransactions {
 
 const Analytics = () => {
   const [loading, setLoading] = useState(true);
-  // const [txs, setTxs] = useState<GroupedTransactions>({});
+  const [txs, setTxs] = useState<Transfer[][]>([[]]);
   const [labels, setLabels] = useState<string[]>([]);
   const [data, setData] = useState<number[]>([]);
   const networkUrls: { [key: string]: string } = {
@@ -133,10 +133,15 @@ const Analytics = () => {
       const lineaInfo = await fetchTransactions(networkUrls['linea'], "0xeEA16fcFb1FAe5269d070F337073aa28f7442ED4");
 
       const allInfo = mergeObjects(mergeObjects(mergeObjects(mergeObjects(mergeObjects(mergeObjects(mergeObjects(ethInfo, arbInfo), optInfo), bnbInfo), avaInfo), baseInfo), polInfo), lineaInfo);
-      // setTxs(allInfo);
-      const labels = Object.keys(allInfo);
+      const sortedKeys = Object.keys(allInfo).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+      const sortedInfo: GroupedTransactions = {};
+      for (const key of sortedKeys) {
+        sortedInfo[key] = allInfo[key];
+      }
+      const labels = Object.keys(sortedInfo);
       setLabels(labels);
-      const values = Object.values(allInfo);
+      const values = Object.values(sortedInfo);
+      setTxs(values);
       const dataValues = values.map(arr => arr.length);
       setData(dataValues);
       setLoading(false);
@@ -146,11 +151,45 @@ const Analytics = () => {
   return (
     <div className="container py-12">
       {!loading ?
-        <div className="flex justify-center items-center">
-          <div className="w-full lg:w-1/2">
-            <GraphComponent labels={labels} data={data} height={400} width={600} />
+        <>
+          <div className="flex justify-center items-center">
+            <div className="w-full lg:w-1/2">
+              <GraphComponent labels={labels} data={data} height={400} width={600} />
+            </div>
           </div>
-        </div>
+          <div>
+            <h1 className="text-2xl text-[#c7f284] mt-20">
+              Transaction History
+            </h1>
+            <br />
+            <div>
+              {labels.map((tx, i) => (
+                <div key={i} className="my-4">
+                  <div className="text-xl text-[#c7f284] font-bold mb-2">{tx}</div>
+
+                  <div className="border border-gray-300">
+                    <div>
+                      <div className="text-[#c7f284] grid grid-cols-3 text-center font-bold border-b border-gray-300 py-2">
+                        <div>From</div>
+                        <div>To</div>
+                        <div>Value</div>
+                      </div>
+                    </div>
+                    <div>
+                      {txs[i].map((eachtx, index) => (
+                        <div key={index} className="grid grid-cols-3 text-center border-b border-gray-300 py-2">
+                          <div>{eachtx.from}</div>
+                          <div>{eachtx.to}</div>
+                          <div>{eachtx.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
         : <div className="flex justify-center items-center text-2xl font-medium">Loading...</div>
       }
     </div>
