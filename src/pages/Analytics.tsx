@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import GraphComponent from "@/components/graph";
+import LoadingBlock from "@/components/loading-block";
 
 interface Transfer {
   hash: string;
@@ -190,7 +191,7 @@ const Analytics = () => {
             </div>
           </div>
         </>
-        : <div className="flex justify-center items-center text-2xl font-medium">Loading...</div>
+        : <div className="flex justify-center items-center text-2xl font-medium"><LoadingBlock /></div>
       }
     </div>
   )
