@@ -56,7 +56,7 @@ const GraphComponent = ({ data, labels, height, width }: { data: number[], label
                 },
                 title: {
                     display: true,
-                    text: "Volume",
+                    text: "Volume( $ )",
                     font: {
                         size: 12,
                     },

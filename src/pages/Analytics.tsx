@@ -36,7 +36,7 @@ const Analytics = () => {
   const [txs, setTxs] = useState<Transfer[][]>([[]]);
   const [labels, setLabels] = useState<string[]>([]);
   const [data, setData] = useState<number[]>([]);
-  const [hashToTokens, setHashToTokens] = useState<{ [key: string]: { token0: string, token1: string, chain: number } }>({});
+  const [hashToTokens, setHashToTokens] = useState<{ [key: string]: { token0: string, token1: string, chain: number, price: number } }>({});
   const networkUrls: { [key: string]: string } = {
     ethereum: "https://eth-mainnet.g.alchemy.com/v2/", // Ethereum Mainnet
     arbitrum: "https://arb-mainnet.g.alchemy.com/v2/", // Arbitrum
@@ -47,6 +47,17 @@ const Analytics = () => {
     polygon: "https://polygon-mainnet.g.alchemy.com/v2/", // Polygon
     linea: "https://linea-mainnet.g.alchemy.com/v2/", // Linea
   };
+
+  const priceUrls: { [key: number]: string } = {
+    [mainnet.id]: 'eth-mainnet',
+    [arbitrum.id]: 'arb-mainnet',
+    [optimism.id]: 'opt-mainnet',
+    [bsc.id]: 'bnb-mainnet',
+    [avalanche.id]: 'avax-mainnet',
+    [base.id]: 'base-mainnet',
+    [polygon.id]: 'polygon-mainnet',
+    [linea.id]: 'linea-mainnet',
+  }
 
   const getTokenName = (address: string, chainId: number) => {
     if (address == '0x0000000000000000000000000000000000000000') {
@@ -120,13 +131,34 @@ const Analytics = () => {
           if (method?.name != 'swapTokens') return;
           const decodedParameters = web3.eth.abi.decodeParameters(method.inputs, txDetails.input.slice(10));
           if (decodedParameters[0] && decodedParameters[1]) {
+            let price: number;
+
+            if (decodedParameters[0] == "0x0000000000000000000000000000000000000000") {
+              const resp = await fetch(`https://api.g.alchemy.com/prices/v1/${apiKey}/tokens/by-symbol?symbols=${decodedParameters[0]}`);
+              const dat = await resp.json();
+              price = parseFloat(tx.value) * dat?.data?.[0]?.prices?.[0]?.value || 0;
+            } else {
+              const resp = await fetch(`https://api.g.alchemy.com/prices/v1/${apiKey}/tokens/by-address`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  addresses: [
+                    { network: priceUrls[chainId], address: decodedParameters[0] },
+                  ]
+                }),
+              });
+              const dat = await resp.json();
+              price = parseFloat(tx.value) * dat?.data?.[0]?.prices?.[0]?.value || 0;
+            }
+
             //@ts-ignore
             setHashToTokens((prev) => ({
               ...prev,
               [tx.hash]: {
                 token0: decodedParameters[0],
                 token1: decodedParameters[1],
-                chain: chainId
+                chain: chainId,
+                price
               },
             }));
           }
@@ -169,11 +201,17 @@ const Analytics = () => {
       setLabels(labels);
       const values = Object.values(sortedInfo);
       setTxs(values);
-      const dataValues = values.map(arr => arr.length);
-      setData(dataValues);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     })();
   }, []);
+
+  useEffect(() => {
+    const dataValues = txs.map(arr => arr.map(item => hashToTokens[item.hash]?.price));
+    const totalPrices = dataValues.map(dayPrices => dayPrices.reduce((sum, price) => sum + price, 0));
+    setData(totalPrices);
+  }, [hashToTokens])
 
   return (
     <div className="container py-12">
