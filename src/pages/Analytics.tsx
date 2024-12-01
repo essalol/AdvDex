@@ -163,9 +163,9 @@ const Analytics = () => {
             </h1>
             <br />
             <div>
-              {labels.map((tx, i) => (
+              {labels.map((_tx, i) => (
                 <div key={i} className="my-4">
-                  <div className="text-xl text-[#c7f284] font-bold mb-2">{tx}</div>
+                  <div className="text-xl text-[#c7f284] font-bold mb-2">{labels[labels.length - 1 - i]}</div>
 
                   <div className="border border-gray-300">
                     <div>
@@ -176,7 +176,7 @@ const Analytics = () => {
                       </div>
                     </div>
                     <div>
-                      {txs[i].map((eachtx, index) => (
+                      {txs[labels.length - 1 - i].map((eachtx, index) => (
                         <div key={index} className="grid grid-cols-3 text-center border-b border-gray-300 py-2">
                           <div>{eachtx.from}</div>
                           <div>{eachtx.to}</div>
