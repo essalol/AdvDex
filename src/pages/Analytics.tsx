@@ -134,7 +134,7 @@ const Analytics = () => {
             let price: number;
 
             if (decodedParameters[0] == "0x0000000000000000000000000000000000000000") {
-              const resp = await fetch(`https://api.g.alchemy.com/prices/v1/${apiKey}/tokens/by-symbol?symbols=${decodedParameters[0]}`);
+              const resp = await fetch(`https://api.g.alchemy.com/prices/v1/${apiKey}/tokens/by-symbol?symbols=${tx.asset}`);
               const dat = await resp.json();
               price = parseFloat(tx.value) * dat?.data?.[0]?.prices?.[0]?.value || 0;
             } else {
